@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VetClinic</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="toast"></div>
+
+<div class="auth-page">
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <a href="/" style="font-size:32px;font-weight:800;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span>🐾</span> VetClinic
+    </a>
+    <h1 class="auth-left-title" data-i18n="authLeftTitle">Teie lemmiku tervis algab siit</h1>
+    <p class="auth-left-text" data-i18n="authLeftText">Liituge tuhandete lemmikloomaomanikega, kes usaldavad VetClinic'i.</p>
+    <div class="auth-features">
+      <div class="auth-feature"><span class="auth-feature-dot"></span><span data-i18n="authFeature1">Online broneerimine ööpäev ringi</span></div>
+      <div class="auth-feature"><span class="auth-feature-dot"></span><span data-i18n="authFeature2">Kinnituskirjad e-postile</span></div>
+      <div class="auth-feature"><span class="auth-feature-dot"></span><span data-i18n="authFeature3">Broneeringute ajalugu ja haldus</span></div>
+      <div class="auth-feature"><span class="auth-feature-dot"></span><span data-i18n="authFeature4">Kõik oma lemmikloomad ühes kohas</span></div>
+      <div class="auth-feature"><span class="auth-feature-dot"></span><span data-i18n="authFeature5">Professionaalsed veterinaararstid</span></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-right">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <a href="/" class="auth-back" data-i18n="authBack">← Tagasi avalehele</a>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="icon-btn theme-btn" onclick="theme.toggle()" title="Theme">🌙</button>
+        <div class="lang-switcher">
+          <button class="icon-btn lang-btn" onclick="i18n.showDropdown(this)" title="Language">ET</button>
+          <div class="lang-dropdown" id="langDropdown">
+            <div class="lang-option" data-lang="et" onclick="i18n.setLang('et')" data-i18n="langEt">🇪🇪 Eesti</div>
+            <div class="lang-option" data-lang="ru" onclick="i18n.setLang('ru')" data-i18n="langRu">🇷🇺 Русский</div>
+            <div class="lang-option" data-lang="en" onclick="i18n.setLang('en')" data-i18n="langEn">🇬🇧 English</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab" id="tabLogin" onclick="switchTab('login')" data-i18n="tabLogin">Logi sisse</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchTab('register')" data-i18n="tabRegister">Registreeru</div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <h2 class="auth-title" data-i18n="loginTitle">Tere tulemast tagasi!</h2>
+      <p class="auth-subtitle" data-i18n="loginSubtitle">Sisesta oma andmed, et jätkata.</p>
+      <div id="loginAlert"></div>
+      <form onsubmit="doLogin(event)">
+        <div class="form-group">
+          <label class="form-label" data-i18n="loginEmail">E-mail</label>
+          <input type="email" class="form-control" id="loginEmail" placeholder="sina@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-i18n="loginPassword">Parool</label>
+          <div style="position:relative;">
+            <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+            <button type="button" onclick="togglePass('loginPassword', this)"
+              style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;">👁</button>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:24px;">
+          <a href="#" onclick="switchTab('forgot')" style="font-size:13px;color:var(--primary);font-weight:500;" data-i18n="forgotPassword">Unustasid parooli?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="loginBtn" data-i18n="loginBtn">Logi sisse</button>
+      </form>
+      <div class="auth-divider">—</div>
+      <p class="auth-switch"><span data-i18n="noAccount">Pole kontot?</span> <a onclick="switchTab('register')" data-i18n="register">Registreeru</a></p>
+      <div style="background:var(--primary-light);border-radius:10px;padding:14px;margin-top:24px;font-size:13px;color:var(--primary-dark);">
+        <strong>Demo admin:</strong> admin@vetclinic.ee / Admin123!
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none;">
+      <h2 class="auth-title" data-i18n="registerTitle">Loo konto</h2>
+      <p class="auth-subtitle" data-i18n="registerSubtitle">Liitu VetClinic'iga – see on tasuta!</p>
+      <div id="registerAlert"></div>
+      <form onsubmit="doRegister(event)">
+        <div class="grid-2" style="gap:16px;margin-bottom:0;">
+          <div class="form-group">
+            <label class="form-label" data-i18n="regName">Eesnimi ja perekonnanimi</label>
+            <input type="text" class="form-control" id="regName" placeholder="Mari Tamm" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-i18n="regPhone">Telefoninumber</label>
+            <input type="tel" class="form-control" id="regPhone" placeholder="+372 5000 0000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-i18n="regEmail">E-mail</label>
+          <input type="email" class="form-control" id="regEmail" placeholder="sina@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-i18n="regPassword">Parool</label>
+          <div style="position:relative;">
+            <input type="password" class="form-control" id="regPassword" placeholder="Vähemalt 6 tähemärki" required minlength="6">
+            <button type="button" onclick="togglePass('regPassword', this)"
+              style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;">👁</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-i18n="regPassword2">Korda parooli</label>
+          <input type="password" class="form-control" id="regPassword2" placeholder="••••••••" required>
+        </div>
+        <div style="margin-bottom:24px;font-size:13px;color:var(--text-muted);" data-i18n="regTerms">
+          Registreerudes nõustud meie kasutustingimustega.
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="registerBtn" data-i18n="registerBtn">Registreeru</button>
+      </form>
+      <p class="auth-switch"><span data-i18n="hasAccount">On juba konto?</span> <a onclick="switchTab('login')" data-i18n="tabLogin">Logi sisse</a></p>
+    </div>
+
+    <!-- FORGOT PASSWORD FORM -->
+    <div id="forgotForm" style="display:none;">
+      <h2 class="auth-title" data-i18n="forgotTitle">Unustasid parooli?</h2>
+      <p class="auth-subtitle" data-i18n="forgotSubtitle">Sisesta oma e-mail ja saadame sulle lähtestamislingi.</p>
+      <div id="forgotAlert"></div>
+      <form onsubmit="doForgot(event)">
+        <div class="form-group">
+          <label class="form-label" data-i18n="loginEmail">E-mail</label>
+          <input type="email" class="form-control" id="forgotEmail" placeholder="sina@example.com" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="forgotBtn" data-i18n="forgotBtn">Saada link</button>
+      </form>
+      <div style="margin-top:20px;text-align:center;">
+        <a href="#" onclick="switchTab('login')" style="font-size:13px;color:var(--primary);" data-i18n="backToLogin">← Tagasi sisselogimisele</a>
+      </div>
+    </div>
+
+    <!-- RESET PASSWORD FORM -->
+    <div id="resetForm" style="display:none;">
+      <h2 class="auth-title" data-i18n="resetTitle">Lähtesta parool</h2>
+      <p class="auth-subtitle" data-i18n="resetSubtitle">Sisesta uus parool</p>
+      <div id="resetAlert"></div>
+      <form onsubmit="doReset(event)">
+        <div class="form-group">
+          <label class="form-label" data-i18n="newPassword">Uus parool</label>
+          <div style="position:relative;">
+            <input type="password" class="form-control" id="resetPassword" placeholder="••••••••" required minlength="6">
+            <button type="button" onclick="togglePass('resetPassword', this)"
+              style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;">👁</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-i18n="confirmPassword">Kinnita parool</label>
+          <input type="password" class="form-control" id="resetPassword2" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="resetBtn" data-i18n="resetBtn">Salvesta parool</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/i18n.js"></script>
+<script>
+const ALL_FORMS = ['loginForm','registerForm','forgotForm','resetForm'];
+
+function switchTab(tab) {
+    ALL_FORMS.forEach(f => document.getElementById(f).style.display = 'none');
+    document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+    document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+
+    if (tab === 'login') document.getElementById('loginForm').style.display = 'block';
+    else if (tab === 'register') document.getElementById('registerForm').style.display = 'block';
+    else if (tab === 'forgot') document.getElementById('forgotForm').style.display = 'block';
+    else if (tab === 'reset') document.getElementById('resetForm').style.display = 'block';
+}
+
+function togglePass(id, btn) {
+    const el = document.getElementById(id);
+    el.type = el.type === 'password' ? 'text' : 'password';
+    btn.textContent = el.type === 'password' ? '👁' : '🙈';
+}
+
+function showAlert(id, message, type = 'error') {
+    document.getElementById(id).innerHTML =
+        `<div class="alert alert-${type === 'error' ? 'error' : 'success'}">${type === 'error' ? '❌' : '✅'} ${message}</div>`;
+}
+
+async function doLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    btn.textContent = i18n.t('loginLoading');
+    document.getElementById('loginAlert').innerHTML = '';
+    try {
+        const data = await api.post('/Auth/login', {
+            email: document.getElementById('loginEmail').value.trim(),
+            password: document.getElementById('loginPassword').value
+        });
+        api.setAuth(data.token, data.user);
+        showToast('✅ ' + i18n.t('loginTitle'), 'success');
+        setTimeout(() => { window.location.href = data.user.role === 'Admin' ? '/admin.html' : '/dashboard.html'; }, 500);
+    } catch (err) {
+        showAlert('loginAlert', err.message);
+        btn.disabled = false;
+        btn.textContent = i18n.t('loginBtn');
+    }
+}
+
+async function doRegister(e) {
+    e.preventDefault();
+    const pwd = document.getElementById('regPassword').value;
+    const pwd2 = document.getElementById('regPassword2').value;
+    if (pwd !== pwd2) { showAlert('registerAlert', i18n.t('fillRequired')); return; }
+    const btn = document.getElementById('registerBtn');
+    btn.disabled = true; btn.textContent = '...';
+    document.getElementById('registerAlert').innerHTML = '';
+    try {
+        const data = await api.post('/Auth/register', {
+            email: document.getElementById('regEmail').value.trim(),
+            password: pwd,
+            name: document.getElementById('regName').value.trim(),
+            phone: document.getElementById('regPhone').value.trim()
+        });
+        api.setAuth(data.token, data.user);
+        showAlert('registerAlert', i18n.t('loginTitle'), 'success');
+        setTimeout(() => { window.location.href = '/dashboard.html'; }, 800);
+    } catch (err) {
+        showAlert('registerAlert', err.message);
+        btn.disabled = false; btn.textContent = i18n.t('registerBtn');
+    }
+}
+
+async function doForgot(e) {
+    e.preventDefault();
+    const btn = document.getElementById('forgotBtn');
+    btn.disabled = true; btn.textContent = '...';
+    document.getElementById('forgotAlert').innerHTML = '';
+    try {
+        await api.post('/Auth/forgot-password', { email: document.getElementById('forgotEmail').value.trim() });
+        showAlert('forgotAlert', i18n.t('forgotSent'), 'success');
+    } catch (err) {
+        showAlert('forgotAlert', err.message);
+    } finally {
+        btn.disabled = false; btn.textContent = i18n.t('forgotBtn');
+    }
+}
+
+async function doReset(e) {
+    e.preventDefault();
+    const pwd = document.getElementById('resetPassword').value;
+    const pwd2 = document.getElementById('resetPassword2').value;
+    if (pwd !== pwd2) { showAlert('resetAlert', i18n.t('fillRequired')); return; }
+    const btn = document.getElementById('resetBtn');
+    btn.disabled = true; btn.textContent = '...';
+    document.getElementById('resetAlert').innerHTML = '';
+    try {
+        const token = new URLSearchParams(window.location.search).get('token');
+        await api.post('/Auth/reset-password', { token, newPassword: pwd });
+        showAlert('resetAlert', i18n.t('loginTitle') + ' ' + i18n.t('tabLogin'), 'success');
+        setTimeout(() => switchTab('login'), 1500);
+    } catch (err) {
+        const msg = (err.message.includes('aegunud') || err.message.includes('vale') || err.message.includes('expired') || err.message.includes('invalid'))
+            ? i18n.t('resetTokenExpired') : err.message;
+        showAlert('resetAlert', msg);
+        btn.disabled = false; btn.textContent = i18n.t('resetBtn');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (api.isLoggedIn()) {
+        window.location.href = api.isAdmin() ? '/admin.html' : '/dashboard.html';
+        return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    const action = params.get('action');
+    const tab = params.get('tab') || 'login';
+
+    if (action === 'reset' && params.get('token')) switchTab('reset');
+    else switchTab(tab);
+});
+</script>
+</body>
+</html>

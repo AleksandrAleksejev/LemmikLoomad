@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VetClinic</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar transparent" id="navbar">
+  <div class="container">
+    <a href="/" class="nav-logo">
+      <span class="nav-logo-icon">🐾</span>
+      VetClinic
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="navAbout">Meist</a></li>
+      <li><a href="#services" data-i18n="navServices">Teenused</a></li>
+      <li><a href="#clinics" data-i18n="navClinics">Kliinikud</a></li>
+      <li><a href="#contact" data-i18n="navContact">Kontakt</a></li>
+    </ul>
+
+    <div class="nav-auth">
+      <button class="icon-btn theme-btn" onclick="theme.toggle()" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff;" title="Theme">🌙</button>
+      <div class="lang-switcher">
+        <button class="icon-btn lang-btn" onclick="i18n.showDropdown(this)" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff;" title="Language">ET</button>
+        <div class="lang-dropdown" id="langDropdown">
+          <div class="lang-option" data-lang="et" onclick="i18n.setLang('et')" data-i18n="langEt">🇪🇪 Eesti</div>
+          <div class="lang-option" data-lang="ru" onclick="i18n.setLang('ru')" data-i18n="langRu">🇷🇺 Русский</div>
+          <div class="lang-option" data-lang="en" onclick="i18n.setLang('en')" data-i18n="langEn">🇬🇧 English</div>
+        </div>
+      </div>
+      <a href="/auth.html" class="btn btn-outline-white btn-sm" id="navLoginBtn" data-i18n="navLogin">Logi sisse</a>
+      <a href="/auth.html?tab=register" class="btn btn-accent btn-sm" id="navRegisterBtn" data-i18n="navRegister">Registreeru</a>
+      <a href="/dashboard.html" class="btn btn-accent btn-sm" id="navDashboardBtn" style="display:none" data-i18n="navMyAccount">Minu konto</a>
+    </div>
+
+    <div class="nav-hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobileMenu" style="display:none; position:fixed; top:72px; left:0; right:0; background:#0d7c5f; padding:20px; z-index:999; border-top:1px solid rgba(255,255,255,0.2);">
+  <ul style="list-style:none; display:flex; flex-direction:column; gap:4px; margin-bottom:16px;">
+    <li><a href="#about" style="display:block; padding:12px 16px; color:#fff; font-weight:500; border-radius:8px;" onclick="toggleMobileMenu()" data-i18n="navAbout">Meist</a></li>
+    <li><a href="#services" style="display:block; padding:12px 16px; color:#fff; font-weight:500; border-radius:8px;" onclick="toggleMobileMenu()" data-i18n="navServices">Teenused</a></li>
+    <li><a href="#clinics" style="display:block; padding:12px 16px; color:#fff; font-weight:500; border-radius:8px;" onclick="toggleMobileMenu()" data-i18n="navClinics">Kliinikud</a></li>
+  </ul>
+  <div style="display:flex; gap:12px;">
+    <a href="/auth.html" class="btn btn-outline-white btn-full" data-i18n="navLogin">Logi sisse</a>
+    <a href="/auth.html?tab=register" class="btn btn-accent btn-full" data-i18n="navRegister">Registreeru</a>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container hero-container">
+    <div class="hero-content">
+      <div class="hero-badge" data-i18n="heroBadge">🌟 Eesti usaldusväärseim veterinaariateenistus</div>
+      <h1><span data-i18n="heroTitleMain">Teie lemmiku tervis on meie </span><span data-i18n="heroTitleHighlight">prioriteet</span></h1>
+      <p data-i18n="heroSubtitle">Professionaalne veterinaarabi koera, kassi ja teiste lemmikloomade eest hoolitsemiseks. 3 kliinikus üle Eesti, kogenud spetsialistid, kaasaegne varustus.</p>
+      <div class="hero-actions">
+        <a href="/auth.html?tab=register" class="btn btn-accent btn-lg" data-i18n="heroCta1">🗓 Broneeri aeg</a>
+        <a href="#services" class="btn btn-outline-white btn-lg" data-i18n="heroCta2">Vaata teenuseid</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-stat-card">
+        <div class="hero-stat-icon">🐾</div>
+        <div>
+          <div class="hero-stat-value">500+</div>
+          <div class="hero-stat-label" data-i18n="heroStat1">Õnnelikku lemmiklooma</div>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hero-stat-icon">🏥</div>
+        <div>
+          <div class="hero-stat-value">3</div>
+          <div class="hero-stat-label" data-i18n="heroStat2">Kliiniku üle Eesti</div>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hero-stat-icon">👨‍⚕️</div>
+        <div>
+          <div class="hero-stat-value">15+</div>
+          <div class="hero-stat-label" data-i18n="heroStat3">Kogenud spetsialisti</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path fill="#f9fafb" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual fade-in">
+        <div class="about-visual-icon">🏥</div>
+        <div class="about-stat-row">
+          <div class="about-stat">
+            <div class="about-stat-num">10+</div>
+            <div class="about-stat-desc" data-i18n="aboutStat1">aastat kogemust</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">98%</div>
+            <div class="about-stat-desc" data-i18n="aboutStat2">rahul klientidest</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">24/7</div>
+            <div class="about-stat-desc" data-i18n="aboutStat3">hädaabi</div>
+          </div>
+        </div>
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="about-feature-icon">🩺</div>
+            <div class="about-feature-text" data-i18n="aboutFeature1">Kogenud ja sertifitseeritud veterinaararstid</div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🔬</div>
+            <div class="about-feature-text" data-i18n="aboutFeature2">Kaasaegne diagnostikaseadmed</div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">💊</div>
+            <div class="about-feature-text" data-i18n="aboutFeature3">Laia valikuga ravimite apteek</div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">❤️</div>
+            <div class="about-feature-text" data-i18n="aboutFeature4">Individuaalne lähenemine igale loomale</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-in" style="animation-delay:0.2s">
+        <span class="section-label" data-i18n="aboutLabel">Meist</span>
+        <h2 class="section-title" data-i18n="aboutTitle">Teie lemmiku usaldusväärne tervisepartner</h2>
+        <p style="color:var(--text-muted);font-size:17px;line-height:1.8;margin-bottom:24px;" data-i18n="aboutText1">
+          VetClinic on asutatud 2014. aastal eesmärgiga pakkuda Eesti lemmikloomaomanikele kõrgeima taseme veterinaarabi.
+        </p>
+        <p style="color:var(--text-muted);font-size:17px;line-height:1.8;margin-bottom:36px;" data-i18n="aboutText2">
+          Usume, et iga lemmikloom väärib parimat hoolitsust. Meie kliinikus on teie loom alati heades kätes.
+        </p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
+          <a href="#services" class="btn btn-primary" data-i18n="aboutBtn1">Vaata teenuseid</a>
+          <a href="#contact" class="btn btn-outline" data-i18n="aboutBtn2">Võta ühendust</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="section services-bg" id="services">
+  <div class="container">
+    <div class="text-center fade-in" style="margin-bottom:56px;">
+      <span class="section-label" data-i18n="servicesLabel">Meie teenused</span>
+      <h2 class="section-title" data-i18n="servicesTitle">Kõik, mida teie lemmik vajab</h2>
+      <p class="section-subtitle" data-i18n="servicesSubtitle">Pakume laia valikut veterinaarteenuseid alates ennetavast tervisekontrollist kuni keerukate protseduurideni.</p>
+    </div>
+    <div class="services-grid" id="servicesGrid">
+      <div class="loader"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY US ===== -->
+<section class="section" id="why">
+  <div class="container">
+    <div class="text-center fade-in" style="margin-bottom:56px;">
+      <span class="section-label" data-i18n="whyLabel">Miks meid valida</span>
+      <h2 class="section-title" data-i18n="whyTitle">Erinevus, mida tunned</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card fade-in">
+        <div class="why-icon">🎓</div>
+        <h3 class="why-title" data-i18n="why1Title">Asjatundlikud spetsialistid</h3>
+        <p class="why-text" data-i18n="why1Text">Kõik meie veterinaararstid omavad kõrgharidust ja regulaarset täiendkoolitust. Teie loom on professionaalide kätes.</p>
+      </div>
+      <div class="why-card fade-in" style="transition-delay:0.1s;">
+        <div class="why-icon">⚡</div>
+        <h3 class="why-title" data-i18n="why2Title">Kiire ja mugav broneerimine</h3>
+        <p class="why-text" data-i18n="why2Text">Broneerige aeg online ööpäev ringi. Saate kohe kinnituskirja e-postile kõigi broneeringu üksikasjadega.</p>
+      </div>
+      <div class="why-card fade-in" style="transition-delay:0.2s;">
+        <div class="why-icon">🏆</div>
+        <h3 class="why-title" data-i18n="why3Title">Tunnustatud kvaliteet</h3>
+        <p class="why-text" data-i18n="why3Text">Oleme pälvinud mitmeid auhindu veterinaarmeditsiini valdkonnas. 98% klientidest soovitab meid oma sõpradele.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLINICS ===== -->
+<section class="section clinics-bg" id="clinics">
+  <div class="container">
+    <div class="text-center fade-in" style="margin-bottom:56px;">
+      <span class="section-label" data-i18n="clinicsLabel">Meie kliinikud</span>
+      <h2 class="section-title" data-i18n="clinicsTitle">Leidke lähim kliinik</h2>
+      <p class="section-subtitle" data-i18n="clinicsSubtitle">Kolm kaasaegset kliinikut Tallinnas ja Tartus – teid on alati lähedal professionaalne abi.</p>
+    </div>
+    <div class="clinics-grid" id="clinicsGrid">
+      <div class="loader"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section" id="cta">
+  <div class="container" style="position:relative;z-index:1;">
+    <h2 class="cta-title fade-in" data-i18n="ctaTitle">Valmis broneerima? 🐾</h2>
+    <p class="cta-subtitle fade-in" data-i18n="ctaSubtitle">Registreerige oma lemmikloom ja broneerige aeg online – kiirelt, mugavalt, usaldusväärselt.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;" class="fade-in">
+      <a href="/auth.html?tab=register" class="btn btn-accent btn-lg" data-i18n="ctaBtn1">Registreeru tasuta</a>
+      <a href="/auth.html" class="btn btn-outline-white btn-lg" data-i18n="ctaBtn2">Logi sisse</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="color:#fff;font-size:20px;margin-bottom:14px;">
+          <span>🐾</span> VetClinic
+        </div>
+        <p data-i18n="footerTagline">Professionaalne veterinaariateenistus Eestis. Teie lemmiku tervis ja heaolu on meie südameasi.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footerLinks">Kiirviited</h4>
+        <ul>
+          <li><a href="#about" data-i18n="navAbout">Meist</a></li>
+          <li><a href="#services" data-i18n="navServices">Teenused</a></li>
+          <li><a href="#clinics" data-i18n="navClinics">Kliinikud</a></li>
+          <li><a href="/auth.html?tab=register" data-i18n="footerRegister">Registreeru</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footerServices">Teenused</h4>
+        <ul>
+          <li><a href="#services" data-i18n="footerHealthCheck">Tervisekontroll</a></li>
+          <li><a href="#services" data-i18n="footerVaccination">Vaktsineerimine</a></li>
+          <li><a href="#services" data-i18n="footerSurgery">Kirurgia</a></li>
+          <li><a href="#services" data-i18n="footerDiagnostics">Diagnostika</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footerContact">Kontakt</h4>
+        <ul>
+          <li><a href="mailto:info@vetclinic.ee">📧 info@vetclinic.ee</a></li>
+          <li><a href="tel:+37260012345">📞 +372 600 1234</a></li>
+          <li><a href="#">📍 Tallinn &amp; Tartu</a></li>
+          <li><a href="#">🕐 E–R: 8–20, L: 9–16</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="footerCopy">© 2024 VetClinic. Kõik õigused kaitstud.</span>
+      <div style="display:flex;gap:16px;">
+        <a href="#" style="color:#475569;" data-i18n="footerPrivacy">Privaatsuspoliitika</a>
+        <a href="#" style="color:#475569;" data-i18n="footerTerms">Kasutustingimused</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/i18n.js"></script>
+<script>
+function toggleMobileMenu() {
+    const m = document.getElementById('mobileMenu');
+    m.style.display = m.style.display === 'none' ? 'block' : 'none';
+}
+
+function localName(p) {
+    if (i18n.lang === 'ru' && p.nimiRu) return p.nimiRu;
+    if (i18n.lang === 'en' && p.nimiEn) return p.nimiEn;
+    return p.nimi;
+}
+function localDesc(p) {
+    if (i18n.lang === 'ru' && p.kirjeldusRu) return p.kirjeldusRu;
+    if (i18n.lang === 'en' && p.kirjeldusEn) return p.kirjeldusEn;
+    return p.kirjeldus;
+}
+
+async function loadServices() {
+    try {
+        const procedures = await api.get('/Proceduur');
+        const grid = document.getElementById('servicesGrid');
+        if (!procedures || procedures.length === 0) {
+            grid.innerHTML = '<p class="text-muted text-center">—</p>';
+            return;
+        }
+        grid.innerHTML = procedures.map(p => `
+            <div class="service-card fade-in">
+                <div class="service-icon">${p.ikoon}</div>
+                <span class="service-tag">${p.kategooria}</span>
+                <div class="service-name">${localName(p)}</div>
+                <div class="service-desc">${localDesc(p)}</div>
+                <div class="service-footer">
+                    <div class="service-price">${i18n.t('serviceFrom')} ${p.hind}€</div>
+                    <div class="service-duration">⏱ ${p.kestus} ${i18n.t('serviceMin')}</div>
+                </div>
+            </div>
+        `).join('');
+        initScrollAnimations();
+    } catch {
+        document.getElementById('servicesGrid').innerHTML = '<p class="text-muted text-center">—</p>';
+    }
+}
+
+async function loadClinics() {
+    try {
+        const clinics = await api.get('/Kliinik/list');
+        const grid = document.getElementById('clinicsGrid');
+        if (!clinics || clinics.length === 0) {
+            grid.innerHTML = '<p class="text-muted text-center">—</p>';
+            return;
+        }
+        grid.innerHTML = clinics.map(c => `
+            <div class="clinic-card fade-in">
+                <div class="clinic-card-header">
+                    <div class="clinic-card-icon">🏥</div>
+                    <div class="clinic-card-name">${c.nimi}</div>
+                </div>
+                <div class="clinic-card-body">
+                    <div class="clinic-info-row"><span class="clinic-info-icon">📍</span><span class="clinic-info-text">${c.aadress}</span></div>
+                    <div class="clinic-info-row"><span class="clinic-info-icon">📞</span><span class="clinic-info-text">${c.telefon}</span></div>
+                    <div class="clinic-info-row"><span class="clinic-info-icon">📧</span><span class="clinic-info-text">${c.email}</span></div>
+                    ${c.kirjeldus ? `<div class="clinic-desc">${c.kirjeldus}</div>` : ''}
+                </div>
+            </div>
+        `).join('');
+        initScrollAnimations();
+    } catch {
+        document.getElementById('clinicsGrid').innerHTML = '<p class="text-muted text-center">—</p>';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadServices();
+    loadClinics();
+
+    if (api.isLoggedIn()) {
+        const user = api.getUser();
+        document.getElementById('navLoginBtn').style.display = 'none';
+        document.getElementById('navRegisterBtn').style.display = 'none';
+        const dashBtn = document.getElementById('navDashboardBtn');
+        if (dashBtn) {
+            dashBtn.style.display = 'flex';
+            dashBtn.href = user?.role === 'Admin' ? '/admin.html' : '/dashboard.html';
+            dashBtn.setAttribute('data-i18n', user?.role === 'Admin' ? 'navAdmin' : 'navMyAccount');
+            i18n.applyToPage();
+        }
+    }
+});
+</script>
+</body>
+</html>

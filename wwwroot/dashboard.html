@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VetClinic</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="toast"></div>
+
+<div class="app-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="sidebar-logo-icon">🐾</span>
+      VetClinic
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebarAvatar">?</div>
+      <div>
+        <div class="sidebar-user-name" id="sidebarName">...</div>
+        <div class="sidebar-user-role" data-i18n="petOwner">Lemmikloomaomanik</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" data-i18n="sidebarMenu">Menu</div>
+        <div class="nav-item active" onclick="showSection('pets')" id="nav-pets">
+          <span class="nav-item-icon">🐾</span><span data-i18n="myPets">Minu lemmikloomad</span>
+        </div>
+        <div class="nav-item" onclick="showSection('book')" id="nav-book">
+          <span class="nav-item-icon">📅</span><span data-i18n="bookTime">Broneeri aeg</span>
+        </div>
+        <div class="nav-item" onclick="showSection('bookings')" id="nav-bookings">
+          <span class="nav-item-icon">📋</span><span data-i18n="myBookings">Minu broneeringud</span>
+        </div>
+        <div class="nav-item" onclick="showSection('medcard')" id="nav-medcard">
+          <span class="nav-item-icon">🩺</span><span data-i18n="medCard">Meditsiinikaart</span>
+        </div>
+        <div class="nav-item" onclick="showSection('vaccines')" id="nav-vaccines">
+          <span class="nav-item-icon">💉</span><span data-i18n="vaccinePassport">Vaktsineerimised</span>
+        </div>
+        <div class="nav-item" onclick="showSection('reviews')" id="nav-reviews">
+          <span class="nav-item-icon">⭐</span><span data-i18n="reviews">Arvustused</span>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" data-i18n="sidebarAccount">Konto</div>
+        <div class="nav-item" onclick="showSection('profile')" id="nav-profile">
+          <span class="nav-item-icon">👤</span><span data-i18n="profile">Profiil</span>
+        </div>
+        <a href="/" class="nav-item" style="text-decoration:none;">
+          <span class="nav-item-icon">🏠</span><span data-i18n="home">Avaleht</span>
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="nav-item" onclick="api.logout()" style="color:#ef4444;">
+        <span class="nav-item-icon">🚪</span><span data-i18n="logout">Logi välja</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="app-main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button onclick="toggleSidebar()" style="background:none;border:none;font-size:22px;cursor:pointer;display:none;" id="menuBtn">☰</button>
+        <div class="topbar-title" id="topbarTitle"></div>
+      </div>
+      <div class="topbar-actions">
+        <div class="topbar-controls">
+          <button class="icon-btn theme-btn" onclick="theme.toggle()">🌙</button>
+          <div class="lang-switcher">
+            <button class="icon-btn lang-btn" onclick="i18n.showDropdown(this)">ET</button>
+            <div class="lang-dropdown" id="langDropdown">
+              <div class="lang-option" data-lang="et" onclick="i18n.setLang('et')" data-i18n="langEt">🇪🇪 Eesti</div>
+              <div class="lang-option" data-lang="ru" onclick="i18n.setLang('ru')" data-i18n="langRu">🇷🇺 Русский</div>
+              <div class="lang-option" data-lang="en" onclick="i18n.setLang('en')" data-i18n="langEn">🇬🇧 English</div>
+            </div>
+          </div>
+        </div>
+        <span style="font-size:13px;color:var(--text-muted);" id="topbarUser"></span>
+        <button class="btn btn-outline btn-sm" onclick="api.logout()" data-i18n="logout">Logi välja</button>
+      </div>
+    </header>
+
+    <div class="main-content">
+
+      <!-- ===== PETS ===== -->
+      <div id="section-pets">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <div>
+            <h2 style="font-size:22px;font-weight:700;" data-i18n="myPets">Minu lemmikloomad</h2>
+            <p style="color:var(--text-muted);font-size:14px;margin-top:4px;" data-i18n="petsSubtitle">Halda oma lemmikloomade andmeid</p>
+          </div>
+          <button class="btn btn-primary" onclick="openAddPetModal()" data-i18n="addPet">+ Lisa lemmikloom</button>
+        </div>
+        <div id="petsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
+          <div class="loader"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- ===== BOOK ===== -->
+      <div id="section-book" style="display:none;">
+        <div style="margin-bottom:24px;">
+          <h2 style="font-size:22px;font-weight:700;" data-i18n="bookTitle">Broneeri aeg</h2>
+          <p style="color:var(--text-muted);font-size:14px;margin-top:4px;" data-i18n="bookSubtitle">Vali protseduur, kliinik ja sobiv aeg</p>
+        </div>
+        <div style="max-width:640px;">
+          <div class="card">
+            <div class="card-body">
+              <div id="bookAlert"></div>
+              <div class="form-group">
+                <label class="form-label" data-i18n="myPets">Lemmikloom *</label>
+                <select class="form-control" id="bookPet"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" data-i18n="procLabel">Protseduur *</label>
+                <select class="form-control" id="bookProcedure" onchange="updateProcInfo();loadSlots()"></select>
+              </div>
+              <div id="procInfo" style="display:none;background:var(--primary-light);border-radius:10px;padding:16px;margin-bottom:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span id="procDesc" style="font-size:14px;color:var(--primary-dark);"></span>
+                  <strong id="procPrice" style="color:var(--primary);font-size:18px;"></strong>
+                </div>
+                <div style="font-size:13px;color:var(--text-muted);margin-top:6px;">⏱ <span id="procDuration"></span> min</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" data-i18n="clinicLabel">Kliinik *</label>
+                <select class="form-control" id="bookClinic" onchange="loadSlots()"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" data-i18n="selectDate">Kuupäev *</label>
+                <input type="date" class="form-control" id="bookDateOnly" onchange="loadSlots()">
+              </div>
+              <div id="slotsSection" style="display:none;margin-bottom:20px;">
+                <label class="form-label" data-i18n="availableSlots">Saadaolevad ajad</label>
+                <div id="slotsGrid" class="slots-grid"></div>
+                <input type="hidden" id="bookDate">
+              </div>
+              <div class="form-group">
+                <label class="form-label" data-i18n="bookNotes">Märkused (valikuline)</label>
+                <textarea class="form-control" id="bookNotes" data-i18n="bookNotesPlaceholder" placeholder="Lisa lisainfo arsti jaoks..."></textarea>
+              </div>
+              <div style="background:var(--info-light);border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;color:#1e40af;" data-i18n="bookEmailNote">
+                📧 Pärast broneerimist saadetakse kinnituskiri teie e-postile kõigi üksikasjadega.
+              </div>
+              <button class="btn btn-primary btn-full btn-lg" onclick="doBook()" id="bookBtn" data-i18n="bookBtn">📅 Broneeri aeg</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BOOKINGS ===== -->
+      <div id="section-bookings" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div>
+            <h2 style="font-size:22px;font-weight:700;" data-i18n="myBookingsTitle">Minu broneeringud</h2>
+            <p style="color:var(--text-muted);font-size:14px;margin-top:4px;" data-i18n="myBookingsSubtitle">Kõik teie broneeringud</p>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="exportBookingsExcel()" data-i18n="exportBookings">📊 Ekspordi</button>
+            <button class="btn btn-primary btn-sm" onclick="showSection('book')" data-i18n="newBooking">+ Uus broneering</button>
+          </div>
+        </div>
+        <div class="search-bar">
+          <input class="search-input" type="text" id="bookingSearch" data-i18n="searchPlaceholder" placeholder="🔍 Otsi broneeringuid..." oninput="filterBookings()">
+          <select class="filter-select" id="bookingStatusFilter" onchange="filterBookings()">
+            <option value="" data-i18n="statusAll">Kõik staatused</option>
+            <option value="Ootel" data-i18n="statusPending">Ootel</option>
+            <option value="Kinnitatud" data-i18n="statusApproved">Kinnitatud</option>
+            <option value="Lükatud" data-i18n="statusRejected">Lükatud</option>
+          </select>
+        </div>
+        <div id="bookingsList" style="display:flex;flex-direction:column;gap:16px;">
+          <div class="loader"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- ===== MED CARD ===== -->
+      <div id="section-medcard" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <div>
+            <h2 style="font-size:22px;font-weight:700;" data-i18n="medCardTitle">Meditsiinikaart</h2>
+            <p style="color:var(--text-muted);font-size:14px;margin-top:4px;" data-i18n="medCardSubtitle">Teie lemmiku tervise ajalugu</p>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="exportMedPdf()" data-i18n="exportPdf">📄 PDF</button>
+            <button class="btn btn-outline btn-sm" onclick="exportMedExcel()" data-i18n="exportExcel">📊 Excel</button>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <select class="filter-select" id="medPetSelect" onchange="loadMedRecords()" style="min-width:200px;">
+            <option value="" data-i18n="selectPetMed">Vali lemmikloom...</option>
+          </select>
+        </div>
+        <!-- Weight chart -->
+        <div id="weightChartWrap" style="display:none;margin-bottom:24px;">
+          <div class="chart-card">
+            <div class="chart-card-title" data-i18n="weightChartTitle">Kaalu dünaamika</div>
+            <canvas id="weightChart" height="120"></canvas>
+          </div>
+        </div>
+        <div id="medRecordsList"></div>
+      </div>
+
+      <!-- ===== VACCINES ===== -->
+      <div id="section-vaccines" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <div>
+            <h2 style="font-size:22px;font-weight:700;" data-i18n="vaccineTitle">Vaktsineerimised</h2>
+            <p style="color:var(--text-muted);font-size:14px;margin-top:4px;" data-i18n="vaccineSubtitle">Lemmiku vaktsineerimiste ajalugu</p>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <select class="filter-select" id="vaccinePetSelect" onchange="loadVaccines()" style="min-width:200px;">
+            <option value="" data-i18n="selectPetMed">Vali lemmikloom...</option>
+          </select>
+        </div>
+        <div id="vaccinesList"></div>
+      </div>
+
+      <!-- ===== REVIEWS ===== -->
+      <div id="section-reviews" style="display:none;">
+        <div style="margin-bottom:24px;">
+          <h2 style="font-size:22px;font-weight:700;" data-i18n="reviewsTitle">Arvustused</h2>
+          <p style="color:var(--text-muted);font-size:14px;margin-top:4px;" data-i18n="reviewsSubtitle">Klientide tagasiside meie kliinikute kohta</p>
+        </div>
+        <div class="card" style="max-width:560px;margin-bottom:28px;">
+          <div class="card-body">
+            <h3 style="font-weight:700;margin-bottom:16px;" data-i18n="addReview">Lisa arvustus</h3>
+            <div id="reviewAlert"></div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="clinicLabel">Kliinik *</label>
+              <select class="form-control" id="reviewClinic"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="rating">Hinnang *</label>
+              <div id="starPicker" style="display:flex;gap:6px;font-size:28px;cursor:pointer;">
+                <span class="star" data-v="1">☆</span><span class="star" data-v="2">☆</span>
+                <span class="star" data-v="3">☆</span><span class="star" data-v="4">☆</span>
+                <span class="star" data-v="5">☆</span>
+              </div>
+              <input type="hidden" id="reviewRating" value="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="comment">Kommentaar *</label>
+              <textarea class="form-control" id="reviewComment" data-i18n="reviewPlaceholder" placeholder="Teie arvamus..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="submitReview()" data-i18n="submitReview">Saada</button>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <select class="filter-select" id="reviewClinicFilter" onchange="loadReviews()" style="min-width:200px;">
+            <option value="" data-i18n="allClinics">Kõik kliinikud</option>
+          </select>
+        </div>
+        <div id="reviewsList"></div>
+      </div>
+
+      <!-- ===== PROFILE ===== -->
+      <div id="section-profile" style="display:none;">
+        <div style="margin-bottom:24px;">
+          <h2 style="font-size:22px;font-weight:700;" data-i18n="profileTitle">Minu profiil</h2>
+        </div>
+        <div style="max-width:480px;">
+          <div class="card">
+            <div class="card-body">
+              <div style="text-align:center;margin-bottom:28px;">
+                <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#1aab80);display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:#fff;margin:0 auto 12px;" id="profileAvatar">?</div>
+                <div style="font-size:20px;font-weight:700;" id="profileName">...</div>
+                <span class="badge badge-primary" style="margin-top:4px;" data-i18n="userRole">Kasutaja</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+                  <span style="font-size:20px;">📧</span>
+                  <div><div style="font-size:12px;color:var(--text-muted);font-weight:600;">E-MAIL</div>
+                  <div style="font-size:15px;font-weight:500;" id="profileEmail">...</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+                  <span style="font-size:20px;">📞</span>
+                  <div><div style="font-size:12px;color:var(--text-muted);font-weight:600;">TELEFON</div>
+                  <div style="font-size:15px;font-weight:500;" id="profilePhone">...</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ADD PET MODAL -->
+<div class="modal-overlay hidden" id="addPetModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="petModalTitle" data-i18n="addPet">Lisa lemmikloom</span>
+      <button class="modal-close" onclick="closePetModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="petModalAlert"></div>
+      <input type="hidden" id="editPetId">
+      <div class="form-group">
+        <label class="form-label" data-i18n="petName">Nimi *</label>
+        <input type="text" class="form-control" id="petName" placeholder="Muhv" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="petSpecies">Liik *</label>
+        <select class="form-control" id="petLiik">
+          <option value="Koer" data-i18n="speciesDog">🐕 Koer</option>
+          <option value="Kass" data-i18n="speciesCat">🐈 Kass</option>
+          <option value="Küülik" data-i18n="speciesRabbit">🐇 Küülik</option>
+          <option value="Lind" data-i18n="speciesBird">🦜 Lind</option>
+          <option value="Muu" data-i18n="speciesOther">🐾 Muu</option>
+        </select>
+      </div>
+      <div class="grid-2" style="gap:16px;">
+        <div class="form-group">
+          <label class="form-label" data-i18n="petWeight">Kaal (kg) *</label>
+          <input type="number" class="form-control" id="petKaal" placeholder="5" min="0" max="200">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-i18n="petAge">Vanus (aastad)</label>
+          <input type="number" class="form-control" id="petVanus" placeholder="3" min="0" max="50">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closePetModal()" data-i18n="cancel">Tühista</button>
+      <button class="btn btn-primary" onclick="savePet()" id="savePetBtn" data-i18n="save">Salvesta</button>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTO INPUT -->
+<input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="uploadPhoto(event)">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/i18n.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
