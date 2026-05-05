@@ -52,7 +52,6 @@ function showSection(name) {
     const titles = {
         pets: i18n.t('myPets'), book: i18n.t('bookTitle'),
         bookings: i18n.t('myBookingsTitle'), medcard: i18n.t('medCardTitle'),
-        vaccines: i18n.t('vaccinePassport'),
         reviews: i18n.t('reviewsTitle'), profile: i18n.t('profileTitle')
     };
     document.getElementById('topbarTitle').textContent = titles[name] || '';
@@ -60,7 +59,6 @@ function showSection(name) {
     if (name === 'bookings') loadBookings();
     if (name === 'book') populateBookForm();
     if (name === 'medcard') initMedCard();
-    if (name === 'vaccines') initVaccines();
     if (name === 'reviews') initReviews();
 }
 

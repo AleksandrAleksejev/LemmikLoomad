@@ -88,7 +88,7 @@ const TRANSLATIONS = {
 
     // Dashboard sidebar
     myPets: 'Minu lemmikloomad', bookTime: 'Broneeri aeg', myBookings: 'Minu broneeringud',
-    medCard: 'Meditsiinikaart', vaccinePassport: 'Vaktsineerimised',
+    medCard: 'Meditsiinikaart',
     reviews: 'Arvustused', profile: 'Profiil', home: 'Avaleht', logout: 'Logi välja',
     petOwner: 'Lemmikloomaomanik',
 
@@ -132,13 +132,7 @@ const TRANSLATIONS = {
     // Weight chart
     weightChartTitle: 'Kaalu dünaamika',
 
-    // Vaccination
-    vaccineTitle: 'Vaktsineerimised', vaccineSubtitle: 'Lemmiku vaktsineerimiste ajalugu ja meeldetuletused',
-    noVaccines: 'Vaktsineerimised puuduvad', noVaccinesText: 'Veel pole ühtegi vaktsineerimist lisatud.',
-    vaccineName: 'Vaktsiin', vaccineDate: 'Manustamise kuupäev', vaccineNext: 'Järgmine kuupäev',
-    vaccineVet: 'Arst', vaccineBatch: 'Partii nr', vaccineNotes: 'Märkused',
-    vaccineOverdue: '⚠️ Tähtaeg möödas!', vaccineDue: '📅 Varsti tähtaeg',
-    vaccineOk: '✅ Korrektne',
+    
 
     // Reviews
     reviewsTitle: 'Arvustused', reviewsSubtitle: 'Klientide tagasiside meie kliinikute kohta',
@@ -339,7 +333,7 @@ const TRANSLATIONS = {
 
     // Dashboard sidebar
     myPets: 'Мои питомцы', bookTime: 'Записаться', myBookings: 'Мои записи',
-    medCard: 'Медкарта', vaccinePassport: 'Прививки',
+    medCard: 'Медкарта', 
     reviews: 'Отзывы', profile: 'Профиль', home: 'Главная', logout: 'Выйти',
     petOwner: 'Владелец питомцев',
 
@@ -383,12 +377,7 @@ const TRANSLATIONS = {
     // Weight chart
     weightChartTitle: 'Динамика веса',
 
-    // Vaccination
-    vaccineTitle: 'Прививки', vaccineSubtitle: 'История вакцинации и напоминания',
-    noVaccines: 'Прививок нет', noVaccinesText: 'Записи о прививках ещё не добавлены.',
-    vaccineName: 'Вакцина', vaccineDate: 'Дата введения', vaccineNext: 'Следующая дата',
-    vaccineVet: 'Врач', vaccineBatch: '№ партии', vaccineNotes: 'Примечания',
-    vaccineOverdue: '⚠️ Срок истёк!', vaccineDue: '📅 Скоро срок', vaccineOk: '✅ Актуально',
+    
 
     // Reviews
     reviewsTitle: 'Отзывы', reviewsSubtitle: 'Отзывы клиентов о наших клиниках',
@@ -583,7 +572,7 @@ const TRANSLATIONS = {
 
     // Dashboard sidebar
     myPets: 'My pets', bookTime: 'Book appointment', myBookings: 'My bookings',
-    medCard: 'Medical record', vaccinePassport: 'Vaccinations',
+    medCard: 'Medical record', 
     reviews: 'Reviews', profile: 'Profile', home: 'Home', logout: 'Log out',
     petOwner: 'Pet owner',
 
@@ -626,12 +615,7 @@ const TRANSLATIONS = {
     // Weight chart
     weightChartTitle: 'Weight dynamics',
 
-    // Vaccination
-    vaccineTitle: 'Vaccinations', vaccineSubtitle: 'Vaccination history and reminders',
-    noVaccines: 'No vaccinations', noVaccinesText: 'No vaccination records have been added yet.',
-    vaccineName: 'Vaccine', vaccineDate: 'Date given', vaccineNext: 'Next due date',
-    vaccineVet: 'Vet', vaccineBatch: 'Batch no.', vaccineNotes: 'Notes',
-    vaccineOverdue: '⚠️ Overdue!', vaccineDue: '📅 Due soon', vaccineOk: '✅ Up to date',
+   
 
     // Reviews
     reviewsTitle: 'Reviews', reviewsSubtitle: 'Client feedback on our clinics',
